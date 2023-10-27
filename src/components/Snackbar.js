@@ -60,7 +60,7 @@ function Snack() {
                             (<>{showSnackbar.message}</>) :
                             <ul>
                                 {showSnackbar.message.map(message =>
-                                    <li>{message}</li>
+                                    <li>{message.message}</li>
                                 )}
                             </ul>
                         }

@@ -10,15 +10,21 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { Link as LinkRouter } from 'react-router-dom'
+import userActions from '../redux/actions/userActions';
+import { useDispatch } from 'react-redux';
 
 export default function SignIn() {
+const dispatch = useDispatch()
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
+        const userData = {
             email: data.get('email'),
             password: data.get('password'),
-        });
+            from:"signUp-form"
+        };
+        dispatch(userActions.signInUser(userData))
     };
 
     return (
@@ -79,7 +85,7 @@ export default function SignIn() {
 
                         <button
                             type="submit"
-                            class="custom-btn btn-7 form_submit_button">
+                            className="custom-btn btn-7 form_submit_button">
                             <span>
                                 SIGN IN
                             </span>

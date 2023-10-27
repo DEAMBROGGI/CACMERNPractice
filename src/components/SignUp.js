@@ -9,12 +9,14 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { Link as LinkRouter } from 'react-router-dom'
+import { Link as LinkRouter, useNavigate} from 'react-router-dom'
 import userActions from '../redux/actions/userActions';
 import { useDispatch } from 'react-redux';
 
+
 export default function SignUp() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -24,10 +26,10 @@ export default function SignUp() {
             password: data.get('password'),
             firstName: data.get('firstName'),
             lastName: data.get('lastName'),
-            from:"signUp-form"
+            from: "signUp-form"
         };
         dispatch(userActions.signUpUser(userData))
-
+       navigate('/signin')
     };
 
     return (

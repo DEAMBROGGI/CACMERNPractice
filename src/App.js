@@ -16,6 +16,7 @@ export const urlBackend = "http://localhost:5000"
 export default function App() {
   const dispatch = useDispatch()
   const showNav = useSelector(store => store.appReducer.showNav)
+  const user = useSelector(store=>store.userReducer.user)
 
   return (
     <div className="App">
@@ -31,12 +32,13 @@ export default function App() {
       >
         <AppBarNav />
       </CSSTransition>
+      
       <Routes>
         <Route path='*' element={<Home />} />
         <Route path='/heros' element={<HerosContainer />} />
         <Route path='/villains' element={<ServicesContainer />} />
-        <Route path='/signin' element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
+        {!user && <Route path='/signin' element={<SignIn />} />}
+        {!user && <Route path="/signup" element={<SignUp />} />}
       </Routes>
     </div>
   );

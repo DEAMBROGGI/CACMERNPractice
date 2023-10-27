@@ -14,7 +14,7 @@ const userActions = {
         }
         return async (dispatch, getState) => {
             const res = await axios.post(`${urlBackend}/api/users/auth/signup`, { userData })
-
+console.log(res)
             dispatch({
                 type: 'message',
                 payload: {
@@ -23,16 +23,18 @@ const userActions = {
                     success: res.data.success
                 }
             });
+
         }
 
     },
-    signInUser: (logedUser) => {
+    signInUser: (userData) => {
 
         return async (dispatch, getState) => {
 
-            const user = await axios.post(`${urlBackend}/api/auth/signIn`, { logedUser })
+            const user = await axios.post(`${urlBackend}/api/users/auth/signin`, { userData })
+            console.log(user)
             if (user.data.success) {
-                dispatch({ type: 'user', payload: user.data.response.userData });
+                dispatch({ type: 'user', payload: user.data.response.dataUser });
             }
             dispatch({
                 type: 'message',
