@@ -9,10 +9,11 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { Link as LinkRouter, useNavigate} from 'react-router-dom'
+import { Link as LinkRouter, useNavigate } from 'react-router-dom'
 import userActions from '../redux/actions/userActions';
 import { useDispatch } from 'react-redux';
-
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 export default function SignUp() {
     const dispatch = useDispatch()
@@ -29,8 +30,26 @@ export default function SignUp() {
             from: "signUp-form"
         };
         dispatch(userActions.signUpUser(userData))
-       navigate('/signin')
+        navigate('/signin')
     };
+
+    const googleSubmit = async (event) => {
+
+        const token = event.credential;
+        const decoded = await jwtDecode(token);
+        console.log(decoded)
+        const userData = {
+            email: decoded.email,
+            password: decoded.family_name+"AMD23google",
+            firstName: decoded.given_name,
+            lastName: decoded.family_name,
+            from: "google"
+        };
+       
+            dispatch(userActions.signUpUser(userData))
+           navigate('/signin')
+    };
+
 
     return (
         <div className='form_container'>
@@ -130,6 +149,12 @@ export default function SignUp() {
                                 SIGN UP
                             </span>
                         </button>
+                        <GoogleLogin
+                            onSuccess={googleSubmit}
+                            onError={() => {
+                                console.log('Login Failed');
+                            }}
+                        />;
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">

@@ -12,6 +12,8 @@ import Container from '@mui/material/Container';
 import { Link as LinkRouter } from 'react-router-dom'
 import userActions from '../redux/actions/userActions';
 import { useDispatch } from 'react-redux';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 export default function SignIn() {
 const dispatch = useDispatch()
@@ -25,6 +27,19 @@ const dispatch = useDispatch()
             from:"signUp-form"
         };
         dispatch(userActions.signInUser(userData))
+    };
+    const googleSubmit = async (event) => {
+
+        const token = event.credential;
+        const decoded = await jwtDecode(token);
+        console.log(decoded)
+        const userData = {
+            email: decoded.email,
+            password: decoded.family_name+"AMD23google",
+            from: "google"
+        };
+       
+            dispatch(userActions.signInUser(userData))
     };
 
     return (
@@ -90,6 +105,12 @@ const dispatch = useDispatch()
                                 SIGN IN
                             </span>
                         </button>
+                        <GoogleLogin
+                            onSuccess={googleSubmit}
+                            onError={() => {
+                                console.log('Login Failed');
+                            }}
+                        />;
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">

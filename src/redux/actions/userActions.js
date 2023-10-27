@@ -12,6 +12,7 @@ const userActions = {
             from: user.from,
             aplication: "heroes"
         }
+        console.log(user)
         return async (dispatch, getState) => {
             const res = await axios.post(`${urlBackend}/api/users/auth/signup`, { userData })
 console.log(res)
