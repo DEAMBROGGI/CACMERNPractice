@@ -24,7 +24,8 @@ const dispatch = useDispatch()
         const userData = {
             email: data.get('email'),
             password: data.get('password'),
-            from:"signUp-form"
+            from:"signUp-form",
+            aplication: "heroes"
         };
         dispatch(userActions.signInUser(userData))
     };
@@ -36,7 +37,8 @@ const dispatch = useDispatch()
         const userData = {
             email: decoded.email,
             password: decoded.family_name+"AMD23google",
-            from: "google"
+            from: "google",
+            aplication: "heroes"
         };
        
             dispatch(userActions.signInUser(userData))

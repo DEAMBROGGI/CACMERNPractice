@@ -5,7 +5,7 @@ function ButtonCallToAction() {
 
     return (
 
-        <div class="main-div main-div1">
+        <div className="main-div main-div1">
             <h1>Choose your destiny....</h1>
         </div>
 

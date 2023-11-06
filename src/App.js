@@ -10,13 +10,25 @@ import HerosContainer from './components/herosContainer';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Snack from './components/Snackbar';
+import { useEffect } from 'react';
+import userActions from './redux/actions/userActions'
 
 export const urlBackend = "http://localhost:5000"
 
 export default function App() {
   const dispatch = useDispatch()
+  
   const showNav = useSelector(store => store.appReducer.showNav)
   const user = useSelector(store=>store.userReducer.user)
+  const userToken = localStorage.getItem("token")
+
+  useEffect(()=>{
+    
+    if(userToken !== null){
+      dispatch(userActions.VerificarToken(userToken))
+    }
+    // eslint-disable-next-line
+  },[])
 
   return (
     <div className="App">

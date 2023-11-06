@@ -12,10 +12,10 @@ const userActions = {
             from: user.from,
             aplication: "heroes"
         }
-        console.log(user)
+
         return async (dispatch, getState) => {
             const res = await axios.post(`${urlBackend}/api/users/auth/signup`, { userData })
-console.log(res)
+
             dispatch({
                 type: 'message',
                 payload: {
@@ -33,10 +33,12 @@ console.log(res)
         return async (dispatch, getState) => {
 
             const user = await axios.post(`${urlBackend}/api/users/auth/signin`, { userData })
-            console.log(user)
+
             if (user.data.success) {
+                localStorage.setItem("token", user.data.response.token)
                 dispatch({ type: 'user', payload: user.data.response.dataUser });
             }
+
             dispatch({
                 type: 'message',
                 payload: {
@@ -56,6 +58,44 @@ console.log(res)
         }
 
     },
+    VerificarToken: (token) => {
+        return async (dispatch, getState) => {
+            await axios.get(`${urlBackend}/api/users/auth/signInToken`, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            })
+                .then(user => {
+                    console.log(user)
+                    if (user.data.success) {
+                        dispatch({ type: "user", payload: user.data.response })
+                        dispatch({
+                            type: "message",
+                            payload:
+                            {
+                                view: true,
+                                message: user.data.message,
+                                success: user.data.success
+                            }
+                        })
+                    }else {
+                        console.log(user)
+                        localStorage.removeItem("token")}
+                }).catch(error =>{
+                    console.log(error)
+                    if(error.response.status === 401){
+                        dispatch({
+                            type: "message",
+                            payload:
+                            {
+                                view: true,
+                                message: "Por favor realiza nuevamente signIn",
+                                success: false
+                            }
+                        })
+                        localStorage.removeItem("token")
+                    }
+                })
+        }
+    }
 
 }
 export default userActions;
